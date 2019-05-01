@@ -67,9 +67,26 @@ function purchase(){
               }
               if(chosenItem.stock_quantity >= parseInt(answer.quantity)) {
                   console.log("Quantity avalible for purchase")
+                  connection.query(
+                      "UPDATE items SET ? WHERE ?",
+                      [
+                          {
+                              stock_quantity: answer.quantity
+                          },
+                          {
+                              id: chosenItem.id
+                          }
+                      ],
+                      function(error) {
+                          if (error) throw err;
+                          console.log("Transaction completed successfully!");
+                          start();
+                      }
+                  );
               } else {
-                  console.log("Insufficent quantity")
+                  console.log("Insufficent quantity. Please try another amount.");
+                  start();
               }
-          })
-    })
+          });
+    });
 }

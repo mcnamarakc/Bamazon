@@ -67,19 +67,24 @@ function purchase(){
               }
               if(chosenItem.stock_quantity >= parseInt(answer.quantity)) {
                   console.log("Quantity avalible for purchase")
+                  var newQuantity = chosenItem.stock_quantity - answer.quantity;
+                  console.log(newQuantity + "remain in stock")
                   connection.query(
                       "UPDATE items SET ? WHERE ?",
                       [
                           {
-                              stock_quantity: answer.quantity
+                              stock_quantity: newQuantity
                           },
                           {
                               id: chosenItem.id
                           }
+                          
                       ],
                       function(error) {
                           if (error) throw err;
                           console.log("Transaction completed successfully!");
+                          var totalCost = chosenItem.price * answer.quantity
+                          console.log("Total cost: $" + totalCost);
                           start();
                       }
                   );
